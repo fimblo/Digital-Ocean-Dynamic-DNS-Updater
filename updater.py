@@ -139,6 +139,7 @@ def process_args():
     parser.add_argument("domain")
     parser.add_argument("record")
     parser.add_argument("rtype", choices=['A', 'AAAA'])
+    parser.add_argument("ip")
     parser.add_argument("-q", "--quiet", action="store_true", help='Only display output on IP change')
     parser.add_argument("-ecoc", "--error-code-on-change", action="store_true", help='return Error Code 1 on IP change')
     return parser.parse_args()
@@ -151,7 +152,7 @@ def run():
             output.suppress = True
 
         output("Update {}.{}: {}", args.record, args.domain, datetime.now())
-        ipaddr = get_external_ip(args.rtype)
+        ipaddr = args.ip
         domain = get_domain(args.domain, args.token)
         record = get_record(domain, args.record, args.rtype, args.token)
         if record['data'] == ipaddr:
